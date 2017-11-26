@@ -5,8 +5,8 @@ import {
   ZIP_CODE_CHANGED,
   DESCRIPTION_CHANGED,
   INFLUENCES_CHANGED,
-  GET_NEW_USER,
-  UPDATE_USER_FULFILLED
+  UPDATE_USER_FULFILLED,
+  GET_USER_FULFILLED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -16,7 +16,7 @@ const INITIAL_STATE = {
   zipCode: '',
   description: '',
   influences: '',
-
+  user: {}
  }
 
  export default( state = INITIAL_STATE, action) => {
@@ -35,11 +35,11 @@ const INITIAL_STATE = {
       return { ...state, description: action.payload }
     case INFLUENCES_CHANGED:
       return { ...state, influences: action.payload }
-    case GET_NEW_USER:
-      return { ...state }
     case UPDATE_USER_FULFILLED:
       console.log('update user reducer', action.payload)
       return { ...state }
+    case GET_USER_FULFILLED:
+      return { ...state, user: action.payload }
     default:
       return state;
    }

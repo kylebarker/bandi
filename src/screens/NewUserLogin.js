@@ -21,13 +21,9 @@ class NewUserLogin extends Component {
     const { email, password, confirmPassword } = this.props;
 
     if(password === confirmPassword && email) {
-      let nav = this.props.navigation
       this.props.createUser(email, password)
-        // .then(function(response){
-        //   console.log('gimme dat data', response.value.data[0])
-        //   nav.navigate('newUserForm', {id: response.value.data[0]})
-        // })
-        nav.navigate('newUserForm')
+      let nav = this.props.navigation
+      nav.navigate('newUserForm')
     } else {
       console.log('bum bum buuuuuum')
     }

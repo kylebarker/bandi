@@ -9,14 +9,11 @@ class SelectionList extends Component {
 
 
   onButtonPress() {
-    console.log('heard button press')
     this.props.push()
     this.setState({checked: !this.state.checked})
   }
 
   render () {
-    console.log("SELECTION LIST LOG", this.props)
-
     return (
         <CheckBox
           title={this.props.title}

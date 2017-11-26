@@ -13,14 +13,6 @@ class UserProfile extends Component {
 
     return (
       <View style={{flex: 1}}>
-        <Header
-          backgroundColor='#393E41'
-          leftComponent={{icon: 'eject', color: '#fff'}}
-          centerComponent={{text: 'PROFILE', style:headerStyle }}
-          rightComponent={{icon: 'edit', color: '#fff' }}
-          statusBarProps={{barStyle: 'light-content'}}
-        />
-
         <ScrollView>
           <Card>
             <CardSection>

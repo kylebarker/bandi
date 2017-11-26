@@ -13,16 +13,15 @@ class InstrumentsList extends Component {
     instrumentsArray: []
   }
 
-
   pushInstrumentId(userid, instrumentid) {
     this.state.instrumentsArray.push({user_id: userid, instrument_id: instrumentid})
   }
 
   onSubmit(uid, instruments) {
     this.props.updateUserInstruments(uid, instruments)
+
     this.props.navigation.goBack()
   }
-
 
   render () {
     const instrumentList = this.props.instruments.instruments.instruments;
@@ -40,8 +39,6 @@ class InstrumentsList extends Component {
         )
       })
     }
-
-
 
     return (
       <View style={{marginTop: 5, marginBottom: 5}}>

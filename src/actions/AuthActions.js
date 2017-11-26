@@ -2,7 +2,8 @@ import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
   CONFIRM_PASSWORD_CHANGED,
-  CREATE_USER
+  CREATE_USER,
+  LOGIN_USER
 } from './types';
 import axios from 'axios';
 
@@ -28,10 +29,16 @@ export const confirmPasswordChanged = (text) => {
 };
 
 export const createUser = (email, password) => {
-  console.log("EMAIL: ", email);
-  console.log("PW: ", password)
   return {
     type: 'CREATE_USER',
-    payload: axios.post(`http://localhost:3000/users/create`, {email: email, password: password})
+    payload: axios.post(`http://localhost:3000/users/create`, {email: email, password: password}),
+    data: {email, password}
+  }
+}
+
+export const loginUser = (email, password) => {
+  return {
+    type: 'LOGIN_USER',
+    payload: axios.post(`http://localhost:3000/users/login`, {email: email, password: password})
   }
 }

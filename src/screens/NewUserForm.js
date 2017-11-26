@@ -2,23 +2,36 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { FormLabel, FormInput, Button, Header } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { firstNameChanged, ageChanged, cityChanged, zipCodeChanged, descriptionChanged, influencesChanged, getNewUser, fetchUserGenres, fetchGenres, fetchInstruments, updateUser } from '../actions';
+import { firstNameChanged, ageChanged, cityChanged, zipCodeChanged, descriptionChanged, influencesChanged, fetchGenres, fetchInstruments, updateUser, getUser, getUserInstruments, getUserGenres } from '../actions';
 
 
 class NewUserForm extends Component {
 
   componentDidMount() {
-    console.log('new user form props did mount', this.props)
-    console.log('trying to find id', this.props.users.auth)
+    console.log('cdm props', this.props)
     this.props.fetchGenres()
     this.props.fetchInstruments()
+    this.props.getUser(this.props.users.auth.email)
 
-
-
+    if(this.props.users.auth){
+      this.props.getUserInstruments(this.props.users.auth.user)
+      // this.props.getUserGenres(this.props.users.auth.user)
+    }
   }
 
+  componentDidUpdate(prevProps, prevState){
+    this.props.getUser(this.props.users.auth.email)
 
+    console.log('prev props', prevProps)
+    console.log('cdu props', this.props)
+    if(prevProps.instruments.instruments.userInstruments === this.props.instruments.instruments.userInstruments){
+      this.props.getUserInstruments(this.props.users.auth.user)
+    }
 
+    // if(prevProps.genres.genres.userGenres === this.props.genres.genres.userGenres){
+    //   this.props.getUserGenres(this.props.users.auth.user)
+    // }
+  }
 
   onFirstNameChange(text) {
     this.props.firstNameChanged(text);
@@ -67,13 +80,37 @@ class NewUserForm extends Component {
     this.props.navigation.navigate('login')
   }
 
+  renderInstrumentStr(){
+    let userInstruments = this.props.instruments.instruments.userInstruments
+    if(userInstruments[0]){
+      return userInstruments.map(instrument => {
+        return(
+          <View key={instrument.id} style={{paddingLeft: 20, marginTop:5, marginBottom: 5}}>
+            <Text>{instrument.instrument}</Text>
+          </View>
+        )
+      })
+    }
+  }
+
+  // renderGenreStr(){
+  //   let userGenres = this.props.genres.genres.userGenres
+  //   if(userGenres[0]){
+  //     return userGenres.map(genre => {
+  //       return(
+  //         <View key={genre.id} style={{paddingLeft: 20, marginTop:5, marginBottom: 5}}>
+  //           <Text>{genre.genre}</Text>
+  //         </View>
+  //       )
+  //     })
+  //   }
+  // }
+
   render () {
 
     const { textStyle, continueButtonStyle } = styles;
 
     console.log('new user form props', this.props)
-
-
 
     return (
       <View>
@@ -124,23 +161,25 @@ class NewUserForm extends Component {
 
 
           <FormLabel>Instruments you play</FormLabel>
-          <Text style={textStyle}>This is where the instrument selections will be</Text>
-          <Button
-            raised
-            backgroundColor="#44BBA4"
-            title='Select the instruments you play'
-            onPress={() => this.onInstrumentButtonPress()}
-          />
-
+          {this.renderInstrumentStr()}
+          <View style={{marginTop: 5}}>
+            <Button
+              raised
+              backgroundColor="#44BBA4"
+              title='Select the instruments you play'
+              onPress={() => this.onInstrumentButtonPress()}
+            />
+          </View>
           <FormLabel>Favorite genres of music</FormLabel>
-          <Text style={textStyle}>This is where the genre selections will be</Text>
-          <Button
-            raised
-            backgroundColor="#44BBA4"
-            title='Select your favorite genres'
-            onPress={() => this.onGenreButtonPress()}
-
-          />
+          {/*  {this.renderGenreStr()} */}
+          <View style={{marginTop: 5}}>
+            <Button
+              raised
+              backgroundColor="#44BBA4"
+              title='Select your favorite genres'
+              onPress={() => this.onGenreButtonPress()}
+            />
+          </View>
 
           <View style={continueButtonStyle}>
             <Button
@@ -185,9 +224,10 @@ export default connect(mapStateToProps, {
   zipCodeChanged,
   descriptionChanged,
   influencesChanged,
-  getNewUser,
-  fetchUserGenres,
   fetchGenres,
   fetchInstruments,
-  updateUser
+  updateUser,
+  getUser,
+  getUserInstruments,
+  getUserGenres,
 }) (NewUserForm);

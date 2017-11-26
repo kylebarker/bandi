@@ -2,7 +2,8 @@ import {
   EMAIL_CHANGED,
   PASSWORD_CHANGED,
   CONFIRM_PASSWORD_CHANGED,
-  CREATE_USER_FULFILLED
+  CREATE_USER_FULFILLED,
+  LOGIN_USER_FULFILLED
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -22,9 +23,15 @@ const INITIAL_STATE = {
       return { ...state, password: action.payload }
     case CONFIRM_PASSWORD_CHANGED:
       return { ...state, confirmPassword: action.payload }
+    case 'CREATE_USER': {
+      return { ...state, user: { email: data.email, password: data.password}}
+    }
     case CREATE_USER_FULFILLED:
       console.log('hello', action.payload)
       return { ...state, user: action.payload.data[0] }
+    case LOGIN_USER_FULFILLED:
+      cosnole.log('login user reducer payload', action.payload)
+      return { ...state }
     default:
       return state;
    }

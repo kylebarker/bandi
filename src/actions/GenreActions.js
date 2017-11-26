@@ -1,7 +1,7 @@
 import {
   FETCH_GENRES,
   UPDATE_USER_GENRES,
-  FETCH_USER_GENRES
+  GET_USER_GENRES
 } from './types';
 import axios from 'axios';
 
@@ -19,9 +19,9 @@ export const updateUserGenres = (userid, genres) => {
   }
 }
 
-export const fetchUserGenres = (userid) => {
+export const getUserGenres = (userid) => {
   return {
-    type: 'FETCH_USER_GENRES',
-    payload: axios.get(`http://localhost:3000/genres/user/${userid}`)
+    type: 'GET_USER_GENRES',
+    payload: axios.get(`http://localhost:3000/genres/${userid}`)
   }
 }

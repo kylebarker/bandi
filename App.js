@@ -14,6 +14,9 @@ import InstrumentsList from './src/screens/InstrumentsList';
 import UserProfile from './src/screens/UserProfile';
 import GenresList from './src/screens/GenresList';
 import SearchScreen from './src/screens/SearchScreen';
+import Messages from './src/screens/Messages';
+import EditSearch from './src/screens/EditSearch';
+
 
 export default class App extends React.Component {
   render() {
@@ -65,25 +68,15 @@ export default class App extends React.Component {
           headerTintColor: '#fff'
         }
       },
-      userProfile: { screen: UserProfile },
-
+      main: {
+        screen: TabNavigator({
+          search: { screen: SearchScreen },
+          userProfile: {screen: UserProfile },
+          messages: {screen: Messages },
+          editSearch: {screen: EditSearch}
+        })
+      }
     })
-
-    // const MainNavigator = StackNavigator({
-    //   search: {
-    //     screen: SearchScreen,
-    //     navigationOptions: {
-    //       headerTitle: 'Search',
-    //       headerStyle: {backgroundColor: '#393E41'},
-    //       headerTitleStyle: {color: '#fff'},
-    //     }
-    //   },
-    //
-    // })
-
-
-
-
 
 
     return (

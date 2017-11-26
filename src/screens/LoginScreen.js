@@ -19,6 +19,11 @@ class LoginScreen extends Component {
     this.props.passwordChanged(text);
   }
 
+  onLoginButtonPress(){
+    this.props.navigation.navigate('main')
+    console.log('login props buton', this.props)
+  }
+
 
   render(){
     console.disableYellowBox = true;
@@ -52,6 +57,7 @@ class LoginScreen extends Component {
             raised
             backgroundColor="#44BBA4"
             title='Log in'
+            onPress={() => this.onLoginButtonPress()}
           />
         </View>
 

@@ -5,7 +5,8 @@ import {
   ZIP_CODE_CHANGED,
   DESCRIPTION_CHANGED,
   INFLUENCES_CHANGED,
-  UPDATE_USER
+  UPDATE_USER,
+  GET_USER
 } from './types';
 import axios from 'axios';
 
@@ -50,6 +51,13 @@ export const influencesChanged = (text) => {
     type: INFLUENCES_CHANGED,
     payload: text
   }
+}
+
+export const getUser = (email) => {
+    return {
+      type: GET_USER,
+      payload: axios.get(`http://localhost:3000/users/${email}`)
+    }
 }
 
 export const updateUser = (userid, first_name, age, city, zip_code, description, influences) => {
