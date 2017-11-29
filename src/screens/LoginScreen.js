@@ -5,7 +5,7 @@ import { FormLabel, FormInput, Button } from 'react-native-elements';
 import Card from '../components/common/Card';
 import CardSection from '../components/common/CardSection';
 import Input from '../components/common/Input';
-import { emailChanged, passwordChanged } from '../actions';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { StackNavigator } from 'react-navigation';
 
 
@@ -20,8 +20,10 @@ class LoginScreen extends Component {
   }
 
   onLoginButtonPress(){
+    let email = `'${this.props.auth.auth.email}'`;
+    let password = this.props.auth.auth.password;
     this.props.navigation.navigate('main')
-    console.log('login props buton', this.props)
+    this.props.loginUser(email, password)
   }
 
 
@@ -50,12 +52,13 @@ class LoginScreen extends Component {
         <FormInput
           placeholder="Please enter your password"
           onChangeText={this.onPasswordChange.bind(this)}
+          secureTextEntry
         />
 
         <View style={loginButtonView}>
           <Button
             raised
-            backgroundColor="#44BBA4"
+            backgroundColor="#1994FB"
             title='Log in'
             onPress={() => this.onLoginButtonPress()}
           />
@@ -64,7 +67,7 @@ class LoginScreen extends Component {
         <View style={signupButtonView}>
           <Button
             raised
-            backgroundColor="#44BBA4"
+            backgroundColor="#1994FB"
             title='Not a user? Click here to sign up'
             onPress={() => this.props.navigation.navigate('newUserLogin')}
           />
@@ -100,10 +103,10 @@ const styles = {
   }
 }
 
-const mapStateToProps = ({ auth }) => {
-  const { email, password } = auth;
+const mapStateToProps = state => {
 
-  return { email, password }
+  return { auth:state }
+
 }
 
-export default connect(mapStateToProps, {emailChanged, passwordChanged})(LoginScreen);
+export default connect(mapStateToProps, {emailChanged, passwordChanged, loginUser})(LoginScreen);

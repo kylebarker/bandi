@@ -47,7 +47,7 @@ class InstrumentsList extends Component {
           <View style={{marginTop:10, marginBottom:10}}>
             <Button
               raised
-              backgroundColor="#44BBA4"
+              backgroundColor="#1994FB"
               title='Submit'
               onPress={() => this.onSubmit(userid, this.state.instrumentsArray)}
             />

@@ -2,35 +2,26 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { FormLabel, FormInput, Button, Header } from 'react-native-elements';
 import { connect } from 'react-redux';
-import { firstNameChanged, ageChanged, cityChanged, zipCodeChanged, descriptionChanged, influencesChanged, fetchGenres, fetchInstruments, updateUser, getUser, getUserInstruments, getUserGenres } from '../actions';
+import { firstNameChanged, ageChanged, cityChanged, zipCodeChanged, descriptionChanged, influencesChanged, fetchInstruments, updateUser, getUser, getUserInstruments } from '../actions';
 
 
 class NewUserForm extends Component {
 
   componentDidMount() {
-    console.log('cdm props', this.props)
-    this.props.fetchGenres()
     this.props.fetchInstruments()
     this.props.getUser(this.props.users.auth.email)
 
     if(this.props.users.auth){
       this.props.getUserInstruments(this.props.users.auth.user)
-      // this.props.getUserGenres(this.props.users.auth.user)
     }
   }
 
   componentDidUpdate(prevProps, prevState){
     this.props.getUser(this.props.users.auth.email)
 
-    console.log('prev props', prevProps)
-    console.log('cdu props', this.props)
     if(prevProps.instruments.instruments.userInstruments === this.props.instruments.instruments.userInstruments){
       this.props.getUserInstruments(this.props.users.auth.user)
     }
-
-    // if(prevProps.genres.genres.userGenres === this.props.genres.genres.userGenres){
-    //   this.props.getUserGenres(this.props.users.auth.user)
-    // }
   }
 
   onFirstNameChange(text) {
@@ -62,10 +53,6 @@ class NewUserForm extends Component {
 
   }
 
-  onGenreButtonPress(){
-    this.props.navigation.navigate('genres')
-  }
-
   onContinueButtonPress(){
     const userid = this.props.users.auth.user;
     const firstName = this.props.users.users.firstName;
@@ -86,26 +73,12 @@ class NewUserForm extends Component {
       return userInstruments.map(instrument => {
         return(
           <View key={instrument.id} style={{paddingLeft: 20, marginTop:5, marginBottom: 5}}>
-            <Text>{instrument.instrument}</Text>
+            <Text style={{fontSize: 16}}>{instrument.instrument}</Text>
           </View>
         )
       })
     }
   }
-
-  // renderGenreStr(){
-  //   let userGenres = this.props.genres.genres.userGenres
-  //   if(userGenres[0]){
-  //     return userGenres.map(genre => {
-  //       return(
-  //         <View key={genre.id} style={{paddingLeft: 20, marginTop:5, marginBottom: 5}}>
-  //           <Text>{genre.genre}</Text>
-  //         </View>
-  //       )
-  //     })
-  //   }
-  // }
-
   render () {
 
     const { textStyle, continueButtonStyle } = styles;
@@ -165,26 +138,16 @@ class NewUserForm extends Component {
           <View style={{marginTop: 5}}>
             <Button
               raised
-              backgroundColor="#44BBA4"
+              backgroundColor="#1994FB"
               title='Select the instruments you play'
               onPress={() => this.onInstrumentButtonPress()}
-            />
-          </View>
-          <FormLabel>Favorite genres of music</FormLabel>
-          {/*  {this.renderGenreStr()} */}
-          <View style={{marginTop: 5}}>
-            <Button
-              raised
-              backgroundColor="#44BBA4"
-              title='Select your favorite genres'
-              onPress={() => this.onGenreButtonPress()}
             />
           </View>
 
           <View style={continueButtonStyle}>
             <Button
               raised
-              backgroundColor="#44BBA4"
+              backgroundColor="#1994FB"
               title='Now go log in when finished'
               onPress={() => this.onContinueButtonPress()}
             />
@@ -212,7 +175,7 @@ const mapStateToProps = state => {
 
 
 
-  return { genres: state, users:state, instruments: state }
+  return { users:state, instruments: state }
 
 }
 
@@ -224,10 +187,8 @@ export default connect(mapStateToProps, {
   zipCodeChanged,
   descriptionChanged,
   influencesChanged,
-  fetchGenres,
   fetchInstruments,
   updateUser,
   getUser,
   getUserInstruments,
-  getUserGenres,
 }) (NewUserForm);

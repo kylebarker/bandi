@@ -12,10 +12,10 @@ import NewUserLogin from './src/screens/NewUserLogin';
 import NewUserForm from './src/screens/NewUserForm';
 import InstrumentsList from './src/screens/InstrumentsList';
 import UserProfile from './src/screens/UserProfile';
-import GenresList from './src/screens/GenresList';
 import SearchScreen from './src/screens/SearchScreen';
 import Messages from './src/screens/Messages';
 import EditSearch from './src/screens/EditSearch';
+import MessageRoom from './src/screens/MessageRoom';
 
 
 export default class App extends React.Component {
@@ -59,22 +59,68 @@ export default class App extends React.Component {
           headerTintColor: '#fff'
         }
       },
-      genres: {
-        screen: GenresList,
-        navigationOptions: {
-          headerTitle: 'Genres',
-          headerStyle: {backgroundColor: '#393E41'},
-          headerTitleStyle: {color: '#fff'},
-          headerTintColor: '#fff'
-        }
-      },
       main: {
         screen: TabNavigator({
-          search: { screen: SearchScreen },
-          userProfile: {screen: UserProfile },
-          messages: {screen: Messages },
-          editSearch: {screen: EditSearch}
+          search: {
+            screen: SearchScreen,
+            navigationOptions: {
+              header: null,
+              tabBarLabel: 'Bandi',
+              tabBarIcon: () => (
+                <Icon name='music-note' color='#393E41'/>
+              )
+            }
+          },
+          userProfile: {
+            screen: UserProfile,
+            navigationOptions: {
+              header: null,
+              tabBarLabel: 'User',
+              tabBarIcon: () => (
+                <Icon name='account-box' color='#393E41'/>
+              )
+            }
+          },
+          messages: {screen: StackNavigator({
+                    matches: {
+                      screen: Messages,
+                      navigationOptions:{
+                        headerTitle: 'Bands',
+                        headerStyle: {backgroundColor: '#393E41'},
+                        headerTitleStyle: {color: '#fff'},
+                        headerTintColor: '#fff',
+                        headerLeft: null,
+                      },
+                    },
+                    messageRoom: {
+                      screen: MessageRoom,
+                      navigationOptions:{
+                        headerTitle: 'Message',
+                        headerStyle: {backgroundColor: '#393E41'},
+                        headerTitleStyle: {color: '#fff'},
+                        headerTintColor: '#fff',
+                      }
+                    }
+                  }),
+                  navigationOptions: {
+                    header: null,
+                    tabBarIcon: () => (
+                      <Icon name='message' color='#393E41'/>
+                    )
+                  }
+          },
+          editSearch: {
+            screen: EditSearch,
+            navigationOptions: {
+              header: null,
+              tabBarLabel: 'Edit Search',
+              tabBarIcon: () => (
+                <Icon name='edit' color='#393E41'/>
+              )
+            }
+          },
         })
+
       }
     })
 

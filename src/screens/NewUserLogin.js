@@ -29,13 +29,10 @@ class NewUserLogin extends Component {
     }
   }
 
-
-
   render () {
 
     const { headerStyle, continueButtonStyle } = styles;
     console.log('new user login props', this.props)
-
 
     return (
       <View>
@@ -64,7 +61,7 @@ class NewUserLogin extends Component {
           <View style={continueButtonStyle}>
             <Button
               raised
-              backgroundColor="#44BBA4"
+              backgroundColor="#1994FB"
               title='Create Account'
               onPress={this.onButtonPress.bind(this)}
             />

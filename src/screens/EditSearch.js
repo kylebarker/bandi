@@ -2,60 +2,79 @@ import React, { Component } from 'react';
 import { Text, View, ScrollView } from 'react-native';
 import { FormLabel, FormInput, Button, Header } from 'react-native-elements';
 import { connect } from 'react-redux';
+import { getUsers, cityChanged, zipCodeChanged } from '../actions';
 
 
 class EditSearch extends Component {
 
-  render () {
+  onCityChange(text) {
+    this.props.cityChanged(text);
+  }
 
+  onZipCodeChange(text){
+    this.props.zipCodeChanged(text);
+  }
+
+  onSearchButtonPress(id, city, zipCode){
+    if(this.props.editSearch.users.city){
+      this.props.getUsers(id, city, zipCode)
+    }
+  }
+
+
+  render () {
+    console.log('edit search props', this.props)
     const { textStyle, continueButtonStyle } = styles;
 
-    return (
-      <View style={{flex: 1}}>
-        <ScrollView>
-          <FormLabel>City</FormLabel>
-          <FormInput
-            placeholder="Search by city"
-            />
+    let userInfo = this.props.editSearch.auth.user
 
-          <FormLabel>Zip Code</FormLabel>
-          <FormInput
-            placeholder="Search by zip code"
-            />
+    if(userInfo){
+      if(userInfo[0]){
+        let city = userInfo[0].city;
+        let zipCode = userInfo[0].zip_code.toString();
+        let userid = userInfo[0].id;
+        console.log('edit search city and zip', city, zipCode)
 
-          <FormLabel>Influences</FormLabel>
-          <FormInput
-            placeholder="Search by influences"
-            />
+        if(this.props.editSearch.foreignUsers.users.length === 0){
+          this.props.getUsers(userid, city, zipCode);
+        }
 
+        return (
+          <View style={{flex: 1, marginTop:30}}>
+            <ScrollView>
+              <FormLabel>City</FormLabel>
+              <FormInput
+                placeholder={city}
+                onChangeText={this.onCityChange.bind(this)}
+                />
 
-          <FormLabel>Instruments</FormLabel>
-          <Text style={textStyle}>Search by instruments</Text>
-          <Button
-            raised
-            backgroundColor="#44BBA4"
-            title='Select instruments to search by'
-          />
+              <FormLabel>Zip Code</FormLabel>
+              <FormInput
+                placeholder={zipCode}
+                onChangeText={this.onZipCodeChange.bind(this)}
+                />
 
-          <FormLabel>Genres</FormLabel>
-          <Text style={textStyle}>Search by genres</Text>
-          <Button
-            raised
-            backgroundColor="#44BBA4"
-            title='Search by genres to search by'
-
-          />
-
-          <View style={continueButtonStyle}>
-            <Button
-              raised
-              backgroundColor="#44BBA4"
-              title='Now go log in when finished'
-            />
+              <View style={continueButtonStyle}>
+                <Button
+                  raised
+                  backgroundColor="#1994FB"
+                  title='Submit new search criteria'
+                  onPress={ () => this.onSearchButtonPress(userid, this.props.editSearch.users.city,this.props.editSearch.users.zipCode) }
+                  />
+              </View>
+            </ScrollView>
           </View>
-        </ScrollView>
-      </View>
-    )
+        )
+      } else {
+        return (
+          <View><Text>Something went wrong</Text></View>
+        )
+      }
+    } else {
+      return (
+        <View><Text>Something went really wrong</Text></View>
+      )
+    }
   }
 }
 
@@ -72,4 +91,8 @@ const styles = {
   }
 }
 
-export default connect(null) (EditSearch);
+const mapStateToProps = state => {
+  return { editSearch: state }
+};
+
+export default connect(mapStateToProps, {getUsers, cityChanged, zipCodeChanged}) (EditSearch);

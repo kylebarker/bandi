@@ -9,60 +9,76 @@ import CardSection from '../components/common/CardSection';
 class UserProfile extends Component {
 
   render () {
-    const { headerStyle, profileTextStyle} = styles;
+    const { profileTextStyle} = styles;
+    let user = this.props.loginScreen.auth.user;
 
-    return (
-      <View style={{flex: 1}}>
-        <ScrollView>
-          <Card>
-            <CardSection>
-              <Text style={{fontSize: 24}}>Roger, 35</Text>
-            </CardSection>
+    if(user[0]){
+      let firstName = user[0].first_name;
+      let age = user[0].age;
+      let city = user[0].city;
+      let zipCode = user[0].zip_code;
+      let influences = user[0].influences;
+      let description = user[0].description;
+      let instruments = '';
 
-            <CardSection>
-              <Text style={profileTextStyle}>Phoenix</Text>
-            </CardSection>
+      user.map(instrument => {
+        instruments = instruments + instrument.instrument + " "
+      })
 
-            <CardSection>
-              <Text style={profileTextStyle}>Guitar, Bass, Drums</Text>
-            </CardSection>
+      return (
+        <View style={{flex: 1, marginTop: 30}}>
+          <ScrollView>
+            <Card>
+              <CardSection>
+                <Text style={{fontSize: 24}}>{firstName}, {age}</Text>
+              </CardSection>
 
-            <CardSection>
-              <Text style={profileTextStyle}>Rock, Alternative Rock</Text>
-            </CardSection>
+              <CardSection>
+                <Text style={profileTextStyle}>{city}</Text>
+              </CardSection>
 
-            <CardSection>
-              <Text style={profileTextStyle}>Led Zeppelin, The Rolling Stones, The Who</Text>
-            </CardSection>
+              <CardSection>
+                <Text style={profileTextStyle}>{zipCode}</Text>
+              </CardSection>
 
-            <CardSection>
-              <Text style={profileTextStyle}>I am primarily a drummer who has some experience drumming in a alternative rock band. I just moved to the area and would like to join a new band. If you like what I have listed in the influences, go ahead a message me!</Text>
-            </CardSection>
-          </Card>
+              <CardSection>
+                <Text style={profileTextStyle}>{instruments}</Text>
+              </CardSection>
 
-          <View style={{marginTop:15}}>
-            <Button
-              raised
-              backgroundColor="#44BBA4"
-              title='Delete Account'
-              />
-          </View>
-        </ScrollView>
+              <CardSection>
+                <Text style={profileTextStyle}>{influences}</Text>
+              </CardSection>
 
-      </View>
-    )
+              <CardSection>
+                <Text style={profileTextStyle}>{description}</Text>
+              </CardSection>
+            </Card>
+          </ScrollView>
+
+        </View>
+      )
+
+    } else {
+      return (
+        <View><Text>Something went wrong</Text></View>
+      )
+    }
+
+
   }
 }
 
 const styles = {
-  headerStyle : {
-    color: '#fff',
-    fontSize: 20
-  },
   profileTextStyle : {
     fontSize: 17
   }
 }
 
+const mapStateToProps = state => {
 
-export default connect(null, {}) (UserProfile);
+  return { loginScreen: state }
+
+}
+
+
+export default connect(mapStateToProps, {}) (UserProfile);

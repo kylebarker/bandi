@@ -6,6 +6,9 @@ import {
   PanResponder,
   Dimensions
 } from 'react-native';
+import { connect } from 'react-redux';
+import { matchUsers } from '../actions';
+import Spinner from './common/Spinner';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SWIPE_THRESHOLD = 0.25 * SCREEN_WIDTH;
@@ -56,7 +59,18 @@ class Deck extends Component {
     const { onSwipeLeft, onSwipeRight, dataUsers } = this.props;
     const user = dataUsers[this.state.index];
 
+
     direction === 'right' ? onSwipeRight(user) : onSwipeLeft(user);
+
+    if(direction === 'right'){
+      let userid = this.props.deckProps.auth.user[0].id;
+      let matchid = user.id;
+
+      console.log('swiped right', userid, matchid)
+      this.props.matchUsers(userid, matchid)
+    }
+
+
     this.state.position.setValue({ x: 0, y: 0});
     this.setState({index: this.state.index + 1});
   }
@@ -82,6 +96,8 @@ class Deck extends Component {
 
   render() {
     const data = this.props.dataUsers;
+    console.log('deck data', data)
+    console.log('deck props', this.props)
 
     if(data){
       if (this.state.index >= data.length){
@@ -111,8 +127,8 @@ class Deck extends Component {
       }).reverse()
     } else {
       return (
-        <View>
-          <Text>Something went wrong</Text>
+        <View style={{marginTop: 100}}>
+          <Spinner />
         </View>
       )
     }
@@ -126,4 +142,9 @@ const styles = {
   }
 }
 
-export default Deck;
+
+const mapStateToProps = state => {
+  return { deckProps: state }
+};
+
+export default connect(mapStateToProps, { matchUsers })(Deck);

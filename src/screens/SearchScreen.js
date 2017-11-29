@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
-
 import Card from '../components/common/Card';
 import CardSection from '../components/common/CardSection';
 import Deck from '../components/Deck';
-import { getUsers } from '../actions';
 
 class SearchScreen extends Component {
 
-
-  componentWillMount() {
-    console.log('SearchScreen component did mount', this.props)
-    this.props.getUsers()
-  }
-
   renderCard(item) {
+    let instrumentsStr = ""
+    item.instruments.map(instrument => {
+      instrumentsStr = instrumentsStr + instrument + " "
+    })
+
+
+
     return (
       <Card key={item.id}>
         <CardSection>
@@ -23,6 +22,12 @@ class SearchScreen extends Component {
         </CardSection>
         <CardSection>
           <Text style={{fontSize: 17}}>{item.city}</Text>
+        </CardSection>
+        <CardSection>
+          <Text style={{fontSize: 17}}>{item.zip_code}</Text>
+        </CardSection>
+        <CardSection>
+          <Text style={{fontSize: 17}}>{instrumentsStr}</Text>
         </CardSection>
         <CardSection>
           <Text style={{fontSize: 17}}>{item.influences}</Text>
@@ -45,13 +50,17 @@ class SearchScreen extends Component {
   }
 
   render () {
+    console.log('renderCard props', this.props)
+    console.log('renderCard users', this.props)
     const users = this.props.foreignUsers.users.data
+
+
     if(users){
       console.log(users[0])
     }
 
     return (
-      <View style={{marginTop: 5}}>
+      <View style={{marginTop: 30}}>
         <Deck
           dataUsers={users}
           renderCard={this.renderCard}
@@ -67,4 +76,4 @@ const mapStateToProps = state => {
   return { foreignUsers: state.foreignUsers }
 };
 
-export default connect(mapStateToProps, {getUsers})(SearchScreen);
+export default connect(mapStateToProps)(SearchScreen);

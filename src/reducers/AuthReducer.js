@@ -30,8 +30,8 @@ const INITIAL_STATE = {
       console.log('hello', action.payload)
       return { ...state, user: action.payload.data[0] }
     case LOGIN_USER_FULFILLED:
-      cosnole.log('login user reducer payload', action.payload)
-      return { ...state }
+      console.log('login user reducer payload', action.payload)
+      return { ...state, user: action.payload.data }
     default:
       return state;
    }
